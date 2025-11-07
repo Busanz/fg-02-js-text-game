@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: black;
+  background-image: url('../img/bgImage.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  text-align: center;
+}
+header {
+  background-color: #00008b77;
+  padding: 52px;
+  font-size: 3rem;
+  color: aqua;
+  height: 200px;
+  width: 100%;
+}
+
+span {
+  font-size: 7rem;
+}
