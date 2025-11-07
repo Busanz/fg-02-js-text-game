@@ -1,3 +1,5 @@
+'use strict';
+
 const gameStartInsruction = () => {
   alert(`🌲🧞‍♂️🧞‍♂️🌲 THE CURSED TREASURE BOX 🌲🧞‍♂️🧞‍♂️🌲
 
@@ -48,55 +50,59 @@ Choose wisely... your fate depends on it! 💀`
 };
 
 let playerGuessPattern = '';
-let exitGame = 2;
+let emptyInputCount = 0;
 let currentAttemp = 0;
 let gameStatus = false;
 
 const secretPattern = [];
 const colorToChoose = ['RED', 'PURPLE', 'GREEN', 'YELLOW', 'BLUE'];
 
-const ATTEMPT_OF_GUESS = 5;
+const ATTEMPT_OF_GUESS = 5; //10
 
 const getPromptInput = () => {
-  playerGuessPattern = prompt(`Enter 3 numbers (1-5) relavent to the colors:
+  playerGuessPattern = prompt(`ATTEMPT: ${currentAttemp}/${ATTEMPT_OF_GUESS}
+
+  ${
+    currentAttemp === 0
+      ? `Enter 3 numbers (1-5) relavent to the colors:
     1 => RED 🔴
     2 => PURPLE 🟣 
     3 => GREEN 🟢 
     4 => YELLOW 🟡 
     5 => BLUE 🔵 
-    Eg: If guess pattern (PURPLE, RED, BLUE) enter 215
+    Eg: If guess pattern (PURPLE, RED, BLUE) enter 215`
+      : ` 1🔴 2🟣 3🟢 4🟡 5🔵 `
+  }   
 `);
   return playerGuessPattern;
 };
 
-const validateGuessPattern = () => {
+const validateGuessPattern = (userInput) => {
   const regEx = /^[1-5]{3}$/;
   let repeatInputNumbers = [];
-  console.log('Check reg value :', regEx.test(playerGuessPattern));
 
-  if (playerGuessPattern !== null && playerGuessPattern !== '') {
-    if (regEx.test(playerGuessPattern.trim())) {
-      let arrayOfThreeNumbers = playerGuessPattern.split('');
+  if (userInput !== null && userInput !== '') {
+    const trimmedUserInput = userInput.trim();
+    if (regEx.test(userInput)) {
+      let arrayOfThreeNumbers = trimmedUserInput.trim().split('');
       repeatInputNumbers = arrayOfThreeNumbers.filter(
         (item, index) => arrayOfThreeNumbers.indexOf(item) !== index
       );
       if (repeatInputNumbers.length === 0) {
-        console.log(playerGuessPattern);
+        console.log(trimmedUserInput);
         return true;
       } else {
         alert(`Remove the repeat numbers: ${repeatInputNumbers[0]}`);
-        playerGuessPattern = '';
         return false;
       }
     } else {
       alert(
-        `Bad input! Only three numbers between 1 and 5' : ${playerGuessPattern}`
+        `Bad input! Only three numbers between 1 and 5' : ${trimmedUserInput}`
       );
-      playerGuessPattern = '';
       return false;
     }
   } else {
-    setExitGame(exitGame);
+    setExitGame(emptyInputCount);
     return false;
   }
 };
@@ -109,6 +115,7 @@ const generateSecretColorCode = () => {
     tempColorToChoose.splice(randomColorIndex, 1);
   }
 
+  //   Need remov below text
   colorToChoose.forEach((item) => {
     console.log(item);
   });
@@ -117,10 +124,6 @@ const generateSecretColorCode = () => {
 
 const convertPlayerGuessPattern = (arr) => {
   const playerGuessArray = Array.from(arr).map((item) => (item -= 1));
-  //   Array.from(arr).forEach((item) => {
-  //     playerGuessArray.push((item -= 1));
-  //   });
-
   console.log(playerGuessArray);
   return playerGuessArray;
 };
@@ -138,6 +141,7 @@ const checkGuessPattern = (arr) => {
   const isGuess = getPlayerGuessPattern(arr).every(
     (item, index) => item === secretPattern[index]
   );
+  console.log(isGuess);
   return isGuess;
 };
 
@@ -158,26 +162,34 @@ const setExitGame = (attemt) => {
   }
 };
 
+// gameStartInsruction();
 generateSecretColorCode();
 getPromptInput();
 
 while (!gameStatus && currentAttemp !== ATTEMPT_OF_GUESS) {
   if (!playerGuessPattern) {
-    setExitGame(exitGame);
+    setExitGame(emptyInputCount);
     console.log(playerGuessPattern);
-    exitGame += 1;
+    emptyInputCount += 1;
   } else {
-    if (validateGuessPattern()) {
-      alert('Validation succes..' + playerGuessPattern);
-      checkGuessPattern(playerGuessPattern);
-      currentAttemp += 1;
-      gameStatus = true;
+    if (validateGuessPattern(playerGuessPattern)) {
+      if (checkGuessPattern(playerGuessPattern)) {
+        alert(`You unlocked the code..✅. 💎💎💎⚱️💎💎👑💎💎💎`);
+        gameStatus = true;
+      } else {
+        currentAttemp += 1;
+        if (currentAttemp === ATTEMPT_OF_GUESS - 1)
+          alert(`One(1) more attemt is left 👹`);
+        if (currentAttemp === ATTEMPT_OF_GUESS)
+          alert(`Loose attempt 5/5. Game over...☠️ 💀 ☠️`);
+
+        console.log(currentAttemp);
+        if (currentAttemp < 5) getPromptInput();
+      }
     } else {
       getPromptInput();
-      exitGame = 0;
+      emptyInputCount = 0;
     }
-    // currentAttemp += 1;
-    // gameStatus = true;
-    console.log('end of the game');
   }
+  console.log('end of the game');
 }
