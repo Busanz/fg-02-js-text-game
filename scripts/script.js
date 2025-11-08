@@ -71,7 +71,7 @@ Choose wisely... your fate depends on it! 💀`
     4 => YELLOW 🟡 
     5 => BLUE 🔵 
     Eg: If guess pattern (PURPLE, RED, BLUE) enter 215`
-      : ` 1🔴 2🟣 3🟢 4🟡 5🔵
+      : `1🔴 2🟣 3🟢 4🟡 5🔵
       ${previousResultDisplay}`
   }   
 `);
@@ -90,7 +90,6 @@ Choose wisely... your fate depends on it! 💀`
           (item, index) => arrayOfThreeNumbers.indexOf(item) !== index
         );
         if (repeatInputNumbers.length === 0) {
-          console.log(trimmedUserInput);
           return true;
         } else {
           alert(`Remove the repeat numbers: ${repeatInputNumbers[0]}`);
@@ -117,17 +116,10 @@ Choose wisely... your fate depends on it! 💀`
       secretPattern.push(tempColorToChoose[randomColorIndex]);
       tempColorToChoose.splice(randomColorIndex, 1);
     }
-
-    //   Need remov below text
-    colorToChoose.forEach((item) => {
-      console.log(item);
-    });
-    console.log(secretPattern);
   };
 
   const convertPlayerGuessPattern = (arr) => {
     const playerGuessArray = Array.from(arr).map((item) => (item -= 1));
-    console.log('Reduce 1 form value', playerGuessArray);
     return playerGuessArray;
   };
 
@@ -136,7 +128,6 @@ Choose wisely... your fate depends on it! 💀`
     convertPlayerGuessPattern(arr).forEach((item) => {
       playerGuessPatternColorArray.push(colorToChoose[item]);
     });
-    console.log(playerGuessPatternColorArray);
     return playerGuessPatternColorArray;
   };
 
@@ -144,7 +135,6 @@ Choose wisely... your fate depends on it! 💀`
     const isGuess = getPlayerGuessPattern(arr).every(
       (item, index) => item === secretPattern[index]
     );
-    console.log(isGuess);
     previousGuessDispaly(getPlayerGuessPattern(arr), secretPattern);
     return isGuess;
   };
@@ -197,8 +187,6 @@ Choose wisely... your fate depends on it! 💀`
       }
     }
 
-    console.log(guessPatternInEmojie.toString());
-
     previousResultDisplay =
       previousResultDisplay +
       '\n' +
@@ -236,7 +224,6 @@ Choose wisely... your fate depends on it! 💀`
     while (!gameStatus && currentAttempt !== ATTEMPT_OF_GUESS) {
       if (!playerGuessPattern) {
         setExitGame(emptyInputCount);
-        console.log(playerGuessPattern);
         emptyInputCount += 1;
       } else {
         if (validateGuessPattern(playerGuessPattern)) {
@@ -253,8 +240,6 @@ Choose wisely... your fate depends on it! 💀`
               alert(
                 `Loose attempts 5/5. Game over...☠️ 💀 ☠️ your soul is 👹 now.....!`
               );
-
-            console.log(currentAttempt);
             if (currentAttempt < 5) getPromptInput();
           }
         } else {
@@ -266,7 +251,7 @@ Choose wisely... your fate depends on it! 💀`
   };
 
   setTimeout(() => {
-    // gameInsruction();
+    gameInsruction();
     generateSecretColorCode();
     getPromptInput();
     gameStart();
