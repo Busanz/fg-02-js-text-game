@@ -53,6 +53,7 @@ let playerGuessPattern = '';
 let emptyInputCount = 0;
 let currentAttemp = 0;
 let gameStatus = false;
+let displayPriveousResult = '';
 
 const secretPattern = [];
 const colorToChoose = ['RED', 'PURPLE', 'GREEN', 'YELLOW', 'BLUE'];
@@ -71,7 +72,8 @@ const getPromptInput = () => {
     4 => YELLOW 🟡 
     5 => BLUE 🔵 
     Eg: If guess pattern (PURPLE, RED, BLUE) enter 215`
-      : ` 1🔴 2🟣 3🟢 4🟡 5🔵 `
+      : ` 1🔴 2🟣 3🟢 4🟡 5🔵 
+      ${displayPriveousResult}`
   }   
 `);
   return playerGuessPattern;
@@ -142,7 +144,32 @@ const checkGuessPattern = (arr) => {
     (item, index) => item === secretPattern[index]
   );
   console.log(isGuess);
+  previousGuessDispaly(getPlayerGuessPattern(arr), secretPattern);
   return isGuess;
+};
+
+//   console.log('Guess pattern', guessPattern);
+//   console.log('Secret pattern', secretPattern);
+
+const previousGuessDispaly = (guessPattern, secretPattern) => {
+  const correctColorAndPosition = [];
+  const colorExistInSecret = [];
+
+  secretPattern.forEach((item, index) => {
+    if (guessPattern[index] === item) {
+      correctColorAndPosition.push(guessPattern[index]);
+    }
+  });
+
+  secretPattern.forEach((item) => {
+    if (guessPattern.includes(item)) {
+      colorExistInSecret.push(item);
+    }
+  });
+  displayPriveousResult = `Att:${currentAttemp}. Guess:[${guessPattern}] ✅ place ✅ color: ${correctColorAndPosition} ✅ color${colorExistInSecret}`;
+
+  console.log('In ✅ place ✅ color:', correctColorAndPosition);
+  console.log('In ✅ color is there:', colorExistInSecret);
 };
 
 const setExitGame = (attemt) => {
